@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>兼职风险检查 Agent 设置</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header>
+        <h1>规则与 API 设置</h1>
+        <p>维护风险规则，配置可选大模型接口。识图模型用于截图识别，回答模型用于信息抽取、追问与风险报告。默认关闭时，插件使用本地规则 Agent。</p>
+      </header>
+
+      <section class="card">
+        <h2>识图模型 API（截图识别）</h2>
+        <label class="switch-row">
+          <input id="visionEnable" type="checkbox" />
+          <span>启用识图模型，用于截图 OCR 识别招聘信息</span>
+        </label>
+        <div class="grid">
+          <label>
+            接口地址
+            <input id="visionEndpoint" placeholder="https://api.openai.com/v1/chat/completions" />
+            <small>可只填域名或 Base URL（如 https://api.deepseek.com），插件会自动补全 /chat/completions 路径。</small>
+          </label>
+          <label>
+            模型名称
+            <input id="visionModel" placeholder="gpt-4o-mini" />
+            <small>需支持图片输入的视觉模型，如 gpt-4o-mini、gpt-4o、qwen-vl-plus、qwen-vl-max、glm-4v 等；纯文本模型无法识别图片。</small>
+          </label>
+        </div>
+        <label>
+          API Key
+          <input id="visionApiKey" type="password" placeholder="课程演示可填临时 Key，正式项目应使用后端中转" />
+        </label>
+        <button id="saveVisionBtn" class="primary">保存识图模型设置</button>
+      </section>
+
+      <section class="card">
+        <h2>回答模型 API（抽取 / 追问 / 报告）</h2>
+        <label class="switch-row">
+          <input id="answerEnable" type="checkbox" />
+          <span>启用回答模型，用于生成结构化抽取、追问与风险解释报告</span>
+        </label>
+        <div class="grid">
+          <label>
+            接口地址
+            <input id="answerEndpoint" placeholder="https://api.openai.com/v1/chat/completions" />
+            <small>可只填域名或 Base URL（如 https://api.deepseek.com），插件会自动补全 /chat/completions 路径。</small>
+          </label>
+          <label>
+            模型名称
+            <input id="answerModel" placeholder="gpt-4o-mini" />
+            <small>文本理解能力较强的模型即可，如 gpt-4o-mini、deepseek-chat、qwen-plus 等；可不支持图片。</small>
+          </label>
+        </div>
+        <label>
+          API Key
+          <input id="answerApiKey" type="password" placeholder="课程演示可填临时 Key，正式项目应使用后端中转" />
+        </label>
+        <button id="saveAnswerBtn" class="primary">保存回答模型设置</button>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <h2>风险规则维护</h2>
+          <button id="resetRulesBtn">恢复默认规则</button>
+        </div>
+        <div class="form-grid">
+          <input id="category" placeholder="风险类别，如 先交费用" />
+          <input id="name" placeholder="规则名称，如 培训费风险" />
+          <input id="keywords" placeholder="关键词，用逗号分隔" />
+          <input id="score" type="number" placeholder="分值，如 40" />
+          <textarea id="description" placeholder="风险说明"></textarea>
+          <textarea id="advice" placeholder="处理建议"></textarea>
+        </div>
+        <button id="addRuleBtn" class="primary">新增规则</button>
+        <div id="rulesList" class="rules"></div>
+      </section>
+
+      <div id="toast" class="toast hidden"></div>
+    </main>
+    <script src="../data/riskRules.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>
